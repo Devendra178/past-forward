@@ -65,20 +65,16 @@ Past Forward is a cutting-edge web application that leverages artificial intelli
 
 ```
 App (Root Component)
-├── Upload State Management
-├── Generation Orchestration
-├── Result Display
-└── Download Management
-    │
+├── State Management (Upload, Generation, Results)
+├── Event Handlers (Upload, Generate, Regenerate, Download)
+└── UI Components
     ├── PolaroidCard (Reusable Component)
     │   ├── Image Display
     │   ├── Loading State
     │   ├── Error State
     │   ├── Shake-to-Regenerate
     │   └── Download Button
-    │
     ├── Footer (Information Component)
-    │
     └── Services Layer
         └── geminiService
             ├── API Communication
@@ -484,8 +480,10 @@ const API_KEY = process.env.API_KEY;
 **Environment File:**
 ```bash
 # .env.local (gitignored)
-API_KEY=your_api_key_here
+GEMINI_API_KEY=your_api_key_here
 ```
+
+**Note:** The Vite configuration maps `GEMINI_API_KEY` from the environment file to `process.env.API_KEY` in the application code.
 
 ### 2. Input Validation
 
@@ -592,15 +590,15 @@ dist/
 ### Environment-Specific Configuration
 
 **Development:**
-```typescript
-// .env.local
-API_KEY=dev_api_key
+```bash
+# .env.local
+GEMINI_API_KEY=dev_api_key
 ```
 
 **Production:**
-```typescript
-// Environment variable injection
-API_KEY=prod_api_key
+```bash
+# Environment variable injection
+GEMINI_API_KEY=prod_api_key
 ```
 
 ### Deployment Targets
@@ -635,10 +633,12 @@ jobs:
           node-version: '18'
       - run: npm ci
       - run: npm run build
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       - name: Deploy
         uses: deployment-action
         with:
-          api-key: ${{ secrets.API_KEY }}
+          deploy-dir: ./dist
 ```
 
 ---
@@ -764,7 +764,7 @@ Semantic Versioning: MAJOR.MINOR.PATCH
 
 | Variable | Required | Description | Example |
 |----------|----------|-------------|---------|
-| API_KEY | Yes | Google Gemini API Key | AIza... |
+| GEMINI_API_KEY | Yes | Google Gemini API Key | AIza... |
 
 ### B. Supported Image Formats
 

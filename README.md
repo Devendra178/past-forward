@@ -56,7 +56,7 @@ npm install
 Create a `.env.local` file in the root directory:
 
 ```bash
-API_KEY=your_gemini_api_key_here
+GEMINI_API_KEY=your_gemini_api_key_here
 ```
 
 Replace `your_gemini_api_key_here` with your actual Gemini API key.
